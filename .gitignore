@@ -1,0 +1,5 @@
+.gradle/
+.idea/
+commons-aliyun-oss.iml
+build/
+gradle.properties
