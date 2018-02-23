@@ -1,0 +1,51 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7'
+    }
+}
+
+group 'com.endofmaster'
+version '1.0.1'
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'com.jfrog.bintray'
+
+repositories {
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
+    jcenter()
+    maven { url "http://dl.bintray.com/jifenke/maven" }
+}
+
+dependencies {
+    compile 'com.aliyun.oss:aliyun-sdk-oss:2.8.2'
+    compile 'org.slf4j:slf4j-api:1.7.21'
+
+    testCompile 'junit:junit:4.12'
+}
+
+bintray {
+    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : '<bintrayUser>'
+    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : '<bintrayApiKey>'
+    configurations = ['archives']
+
+    dryRun = false //[Default: false] Whether to run this as dry-run, without deploying
+    publish = true //[Default: false] Whether version should be auto published after an upload
+    override = false //[Default: false] Whether to override version artifacts already published
+    pkg {
+        repo = 'maven'
+        name = project.name
+        userOrg = 'endofmaster'
+        licenses = ['Apache-2.0']
+        vcsUrl = "https://github.com/EndOfMaster/${project.name}/"
+        version {
+            name = project.version
+        }
+    }
+}
+
+// 代码文件以UTF-8编码，注意：不加该设置可能报“错误: 编码GBK的不可映射字符”
+[compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
