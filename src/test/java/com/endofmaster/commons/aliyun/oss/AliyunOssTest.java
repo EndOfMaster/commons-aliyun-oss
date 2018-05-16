@@ -1,4 +1,4 @@
-package com.jifenke.commons.aliyun.oss;
+package com.endofmaster.commons.aliyun.oss;
 
 import org.junit.Assert;
 import org.junit.Ignore;
