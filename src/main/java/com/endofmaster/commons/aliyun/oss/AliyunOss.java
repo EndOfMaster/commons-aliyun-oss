@@ -1,4 +1,4 @@
-package com.jifenke.commons.aliyun.oss;
+package com.endofmaster.commons.aliyun.oss;
 
 import com.aliyun.oss.ClientConfiguration;
 import com.aliyun.oss.HttpMethod;

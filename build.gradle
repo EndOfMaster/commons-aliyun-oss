@@ -8,15 +8,15 @@ buildscript {
 }
 
 group 'com.endofmaster'
-version '1.0.1'
+version '1.0.0'
 
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'com.jfrog.bintray'
 
 repositories {
-    maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
     jcenter()
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
     maven { url "http://dl.bintray.com/jifenke/maven" }
 }
 

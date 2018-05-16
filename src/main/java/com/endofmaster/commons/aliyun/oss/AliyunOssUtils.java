@@ -1,4 +1,4 @@
-package com.jifenke.commons.aliyun.oss;
+package com.endofmaster.commons.aliyun.oss;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
