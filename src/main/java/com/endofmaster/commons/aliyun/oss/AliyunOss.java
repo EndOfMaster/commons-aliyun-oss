@@ -92,6 +92,13 @@ public class AliyunOss {
     }
 
     /**
+     * 上传文件
+     */
+    public void upload(String bucketName, String key, InputStream input) {
+        ossClient.putObject(bucketName, key, input);
+    }
+
+    /**
      * 构建某个OSS对象的下载链接
      *
      * @param key            OSS对象
