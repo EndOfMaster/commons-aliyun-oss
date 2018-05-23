@@ -135,10 +135,12 @@ public class AliyunOss {
      * 删除多个文件
      */
     public void delete(List<String> keys) {
-        DeleteObjectsResult deleteObjectsResult = ossClient.deleteObjects(new DeleteObjectsRequest(bucket).withKeys(keys));
-        List<String> deletedObjects = deleteObjectsResult.getDeletedObjects();
-        if (deletedObjects != null && deletedObjects.size() > 0) {
-            deletedObjects.forEach(key -> logger.debug("批量删除失败的key：" + key));
+        if (keys != null && keys.size() > 0) {
+            DeleteObjectsResult deleteObjectsResult = ossClient.deleteObjects(new DeleteObjectsRequest(bucket).withKeys(keys));
+            List<String> deletedObjects = deleteObjectsResult.getDeletedObjects();
+            if (deletedObjects != null && deletedObjects.size() > 0) {
+                deletedObjects.forEach(key -> logger.debug("批量删除失败的key：" + key));
+            }
         }
     }
 
