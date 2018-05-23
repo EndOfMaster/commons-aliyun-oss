@@ -5,25 +5,23 @@ import com.aliyun.oss.HttpMethod;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.common.comm.Protocol;
 import com.aliyun.oss.internal.OSSUtils;
-import com.aliyun.oss.model.Callback;
-import com.aliyun.oss.model.MatchMode;
-import com.aliyun.oss.model.OSSObject;
-import com.aliyun.oss.model.PolicyConditions;
+import com.aliyun.oss.model.*;
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 import java.net.URL;
 import java.time.Instant;
-import java.util.Base64;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author YQ.Huang
  * @update ZM.Wang
  */
 public class AliyunOss {
+
+    private final static Logger logger = LoggerFactory.getLogger(AliyunOss.class);
 
     private final String bucket;
     private final String endpoint;
@@ -125,6 +123,25 @@ public class AliyunOss {
         result.put("mimeType", mimeType);
         return result;
     }
+
+    /**
+     * 删除单个文件
+     */
+    public void delete(String key) {
+        ossClient.deleteObject(bucket, key);
+    }
+
+    /**
+     * 删除多个文件
+     */
+    public void delete(List<String> keys) {
+        DeleteObjectsResult deleteObjectsResult = ossClient.deleteObjects(new DeleteObjectsRequest(bucket).withKeys(keys));
+        List<String> deletedObjects = deleteObjectsResult.getDeletedObjects();
+        if (deletedObjects != null && deletedObjects.size() > 0) {
+            deletedObjects.forEach(key -> logger.debug("批量删除失败的key：" + key));
+        }
+    }
+
 
     private Callback buildUploadCallback(String callbackUrl) {
         Callback callback = new Callback();
