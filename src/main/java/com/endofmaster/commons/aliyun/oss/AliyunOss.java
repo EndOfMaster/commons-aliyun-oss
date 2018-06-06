@@ -79,6 +79,21 @@ public class AliyunOss {
     }
 
     /**
+     * 查询是否存在这个文件
+     */
+    public boolean has(String key) {
+        return ossClient.doesObjectExist(bucket, key);
+    }
+
+    /**
+     * 查询文件类型
+     */
+    public String queryType(String key) {
+        ObjectMetadata metadata = ossClient.getObjectMetadata(bucket, key);
+        return metadata.getContentType();
+    }
+
+    /**
      * 下载文件
      *
      * @param key OSS对象
