@@ -97,11 +97,10 @@ public class AliyunOss {
      * 下载文件
      *
      * @param key OSS对象
-     * @return 字节数组格式的文件内容
+     * @return 阿里云数据对象
      */
-    public InputStream download(String key) {
-        OSSObject ossObject = ossClient.getObject(bucket, key);
-        return ossObject.getObjectContent();
+    public OSSObject download(String key) {
+        return ossClient.getObject(bucket, key);
     }
 
     /**
