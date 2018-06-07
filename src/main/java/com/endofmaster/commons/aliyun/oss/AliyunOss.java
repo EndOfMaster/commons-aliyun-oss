@@ -106,8 +106,8 @@ public class AliyunOss {
     /**
      * 上传文件
      */
-    public void upload(String bucketName, String key, InputStream input) {
-        ossClient.putObject(bucketName, key, input);
+    public void upload(String key, InputStream input) {
+        ossClient.putObject(bucket, key, input);
     }
 
     /**
