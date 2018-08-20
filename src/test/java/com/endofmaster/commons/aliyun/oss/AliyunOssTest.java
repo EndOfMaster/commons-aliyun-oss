@@ -1,5 +1,6 @@
 package com.endofmaster.commons.aliyun.oss;
 
+import com.aliyun.oss.model.OSSObject;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -22,7 +23,7 @@ public class AliyunOssTest {
 
     @Test
     public void download() throws Exception {
-        InputStream stream = aliyunOss.download("cert/wx-server.pfx");
+        OSSObject stream = aliyunOss.download("cert/wx-server.pfx");
         Assert.assertNotNull(stream);
     }
 
