@@ -163,7 +163,7 @@ public class AliyunOss {
         Callback callback = new Callback();
         callback.setCallbackUrl(callbackUrl);
         String body = "bucket=${bucket}&" +
-                "object=${object}&" +
+                "ossKey=${object}&" +
                 "size=${size}&" +
                 "mimeType=${mimeType}";
         callback.setCallbackBody(body);
