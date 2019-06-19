@@ -126,16 +126,17 @@ public class AliyunOss {
     /**
      * 构建上传回调响应
      */
-    public Map<String, Object> buildUploadResponse(String key, Integer size, String mimeType, boolean needDownloadUrl) {
+    public Map<String, Object> buildUploadResponse(String imageId, String key, Integer size, String mimeType, boolean needDownloadUrl) {
         Map<String, Object> result = new HashMap<>();
         if (needDownloadUrl) {
             result.put("url", buildDownloadUrl(key, 100));
         } else {
-            result.put("url", key);
+            result.put("ossKey", key);
         }
+        result.put("imageId", imageId);
         result.put("size", size);
         result.put("mimeType", mimeType);
-        result.put("Status","Ok");
+        result.put("Status", "Ok");
         return result;
     }
 
