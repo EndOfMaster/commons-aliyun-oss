@@ -131,7 +131,7 @@ public class AliyunOss {
         if (needDownloadUrl) {
             result.put("url", buildDownloadUrl(key, 100));
         } else {
-            result.put("ossKey", key);
+            result.put("url", key);
         }
         result.put("imageId", imageId);
         result.put("size", size);
