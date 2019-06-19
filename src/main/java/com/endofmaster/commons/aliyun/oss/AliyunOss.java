@@ -6,7 +6,7 @@ import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.common.comm.Protocol;
 import com.aliyun.oss.internal.OSSUtils;
 import com.aliyun.oss.model.*;
-import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -135,6 +135,7 @@ public class AliyunOss {
         }
         result.put("size", size);
         result.put("mimeType", mimeType);
+        result.put("Status","Ok");
         return result;
     }
 

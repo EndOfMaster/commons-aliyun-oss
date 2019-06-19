@@ -21,7 +21,8 @@ repositories {
 }
 
 dependencies {
-    compile 'com.aliyun.oss:aliyun-sdk-oss:2.8.2'
+    compile 'org.apache.commons:commons-lang3:3.9'
+    compile 'com.aliyun.oss:aliyun-sdk-oss:2.8.3'
     compile 'org.slf4j:slf4j-api:1.7.21'
 
     testCompile 'junit:junit:4.12'
