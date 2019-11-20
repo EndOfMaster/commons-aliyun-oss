@@ -55,7 +55,8 @@ public class AliyunOss {
         this.accessKeyId = accessKeyId;
         this.bucketUrl = "https://" + bucket + "." + endpoint;
         this.ossClient = ossClient(endpoint, accessKeyId, accessKeySecret);
-        IClientProfile profile = DefaultProfile.getProfile(endpoint, accessKeyId, accessKeySecret);
+        String region = endpoint.substring(endpoint.indexOf("-") + 1, endpoint.indexOf("."));
+        IClientProfile profile = DefaultProfile.getProfile(region, accessKeyId, accessKeySecret);
         this.iAcsClient = new DefaultAcsClient(profile);
         this.roleArn = roleArn;
         this.policy = policy;
