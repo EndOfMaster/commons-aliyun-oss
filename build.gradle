@@ -1,30 +1,31 @@
 buildscript {
     repositories {
+        maven { url 'https://maven.aliyun.com/repository/central' }
         jcenter()
-    }
-    dependencies {
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7'
     }
 }
 
-group 'com.endofmaster'
-version '1.0.5'
+plugins {
+    id 'maven'
+    id 'java-library'
+    id "com.jfrog.bintray" version "1.8.5"
+}
 
-apply plugin: 'java'
-apply plugin: 'maven'
-apply plugin: 'com.jfrog.bintray'
+group = 'com.endofmaster'
+version = '1.0.6'
+sourceCompatibility = '1.8'
+description = 'Aliyun Oss Java SDK'
+
 
 repositories {
-    jcenter()
-    maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
-    maven { url "http://dl.bintray.com/endofmaster/maven" }
+    maven { url 'https://maven.aliyun.com/repository/central' }
+    maven { url "https://dl.bintray.com/endofmaster/maven" }
 }
 
 dependencies {
-    compile 'org.apache.commons:commons-lang3:3.9'
-    compile 'com.aliyun.oss:aliyun-sdk-oss:2.8.3'
-    compile 'com.aliyun:aliyun-java-sdk-core:4.1.0'
-    compile 'org.slf4j:slf4j-api:1.7.21'
+    implementation 'org.apache.commons:commons-lang3:3.9'
+    implementation 'com.aliyun.oss:aliyun-sdk-oss:3.11.1'
+    implementation 'org.slf4j:slf4j-api:1.7.21'
 
     testCompile 'junit:junit:4.12'
 }
@@ -36,7 +37,7 @@ bintray {
 
     dryRun = false //[Default: false] Whether to run this as dry-run, without deploying
     publish = true //[Default: false] Whether version should be auto published after an upload
-    override = false //[Default: false] Whether to override version artifacts already published
+    override = true //[Default: false] Whether to override version artifacts already published
     pkg {
         repo = 'maven'
         name = project.name

@@ -73,13 +73,17 @@ public class AliyunOss {
      * @return 上传凭证
      */
     public UploadCredentials buildUploadCredentials(String folder, String callbackUrl, int maxContentLength, int expirationSecs) {
-        PolicyConditions policyConditions = new PolicyConditions();
         // 前缀
         String prefix = DateFormatUtils.format(new Date(), "yyyyMMddHHmmssSSS") + "-";
         if (folder != null) {
             prefix = folder + "/" + prefix;
         }
-        policyConditions.addConditionItem(MatchMode.StartWith, PolicyConditions.COND_KEY, prefix);
+        return buildUploadCredentialsFullKey(prefix, callbackUrl, maxContentLength, expirationSecs);
+    }
+
+    public UploadCredentials buildUploadCredentialsFullKey(String ossKey, String callbackUrl, int maxContentLength, int expirationSecs) {
+        PolicyConditions policyConditions = new PolicyConditions();
+        policyConditions.addConditionItem(MatchMode.StartWith, PolicyConditions.COND_KEY, ossKey);
         // 文件大小限制
         policyConditions.addConditionItem(PolicyConditions.COND_CONTENT_LENGTH_RANGE, 0, maxContentLength);
         // 链接有效期
@@ -98,7 +102,7 @@ public class AliyunOss {
                 Base64.getEncoder().encodeToString(policy.getBytes()),
                 signature,
                 "200",
-                prefix,
+                ossKey,
                 callback);
     }
 
