@@ -3,18 +3,21 @@ package com.endofmaster.commons.aliyun.oss;
 import com.aliyun.oss.ClientConfiguration;
 import com.aliyun.oss.HttpMethod;
 import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.common.auth.DefaultCredentialProvider;
 import com.aliyun.oss.common.comm.Protocol;
 import com.aliyun.oss.internal.OSSUtils;
-import com.aliyun.oss.model.*;
+import com.aliyun.oss.model.Callback;
+import com.aliyun.oss.model.DeleteObjectsRequest;
+import com.aliyun.oss.model.DeleteObjectsResult;
+import com.aliyun.oss.model.MatchMode;
+import com.aliyun.oss.model.OSSObject;
+import com.aliyun.oss.model.ObjectMetadata;
+import com.aliyun.oss.model.PolicyConditions;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
-import com.aliyuncs.auth.sts.AssumeRoleRequest;
-import com.aliyuncs.auth.sts.AssumeRoleResponse;
-import com.aliyuncs.exceptions.ClientException;
-import com.aliyuncs.http.MethodType;
-import com.aliyuncs.http.ProtocolType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +25,10 @@ import org.slf4j.LoggerFactory;
 import java.io.InputStream;
 import java.net.URL;
 import java.time.Instant;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author YQ.Huang
@@ -37,30 +43,11 @@ public class AliyunOss {
     private final String bucketUrl;
     private final OSSClient ossClient;
 
-    private IAcsClient iAcsClient;
-    private String roleArn;
-    private String policy;
-    private long durationSeconds;
-
-
     public AliyunOss(String bucket, String endpoint, String accessKeyId, String accessKeySecret) {
         this.bucket = bucket;
         this.accessKeyId = accessKeyId;
         this.bucketUrl = "https://" + bucket + "." + endpoint;
         this.ossClient = ossClient(endpoint, accessKeyId, accessKeySecret);
-    }
-
-    public AliyunOss(String bucket, String endpoint, String accessKeyId, String accessKeySecret, String roleArn, String policy, long durationSeconds) {
-        this.bucket = bucket;
-        this.accessKeyId = accessKeyId;
-        this.bucketUrl = "https://" + bucket + "." + endpoint;
-        this.ossClient = ossClient(endpoint, accessKeyId, accessKeySecret);
-        String region = endpoint.substring(endpoint.indexOf("-") + 1, endpoint.indexOf("."));
-        IClientProfile profile = DefaultProfile.getProfile(region, accessKeyId, accessKeySecret);
-        this.iAcsClient = new DefaultAcsClient(profile);
-        this.roleArn = roleArn;
-        this.policy = policy;
-        this.durationSeconds = durationSeconds;
     }
 
     /**
@@ -94,12 +81,12 @@ public class AliyunOss {
         String callback = null;
         if (callbackUrl != null) {
             String callbackJson = OSSUtils.jsonizeCallback(buildUploadCallback(callbackUrl));
-            callback = Base64.getEncoder().encodeToString(callbackJson.getBytes());
+            callback = Base64.encodeBase64String(callbackJson.getBytes());
         }
         return new UploadCredentials(
                 bucketUrl,
                 accessKeyId,
-                Base64.getEncoder().encodeToString(policy.getBytes()),
+                Base64.encodeBase64String(policy.getBytes()),
                 signature,
                 "200",
                 ossKey,
@@ -188,34 +175,6 @@ public class AliyunOss {
         }
     }
 
-    public Map<String, String> getAppStsPolicyParams() {
-        if (iAcsClient == null) {
-            throw new AliyunOssException("该方法需要加载STS授权构造方法");
-        }
-        try {
-            AssumeRoleRequest request = new AssumeRoleRequest();
-            request.setVersion("2015-04-01");
-            request.setMethod(MethodType.POST);
-            request.setProtocol(ProtocolType.HTTPS);
-
-            request.setRoleArn(roleArn);
-            request.setRoleSessionName("alice-001");
-            request.setPolicy(policy);
-            request.setDurationSeconds(durationSeconds);
-
-            AssumeRoleResponse response = iAcsClient.getAcsResponse(request);
-            Map<String, String> params = new HashMap<>();
-            params.put("StatusCode", "200");
-            params.put("AccessKeyId", response.getCredentials().getAccessKeyId());
-            params.put("AccessKeySecret", response.getCredentials().getAccessKeySecret());
-            params.put("SecurityToken", response.getCredentials().getSecurityToken());
-            params.put("Expiration", response.getCredentials().getExpiration());
-            return params;
-        } catch (ClientException e) {
-            throw new AliyunOssException("请求STS授权错误，ErrorCode：" + e.getErrCode() + "，ErrorMessage：" + e.getErrMsg());
-        }
-    }
-
     private Callback buildUploadCallback(String callbackUrl) {
         Callback callback = new Callback();
         callback.setCallbackUrl(callbackUrl);
@@ -231,6 +190,6 @@ public class AliyunOss {
     private OSSClient ossClient(String endpoint, String accessKeyId, String accessKeySecret) {
         ClientConfiguration conf = new ClientConfiguration();
         conf.setProtocol(Protocol.HTTPS);
-        return new OSSClient(endpoint, accessKeyId, accessKeySecret, conf);
+        return new OSSClient(endpoint, new DefaultCredentialProvider(accessKeyId, accessKeySecret), conf);
     }
 }

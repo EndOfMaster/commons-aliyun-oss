@@ -1,16 +1,15 @@
 package com.endofmaster.commons.aliyun.oss;
 
 import com.aliyun.oss.model.OSSObject;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-import java.io.InputStream;
 
 /**
  * @author YQ.Huang
  */
-@Ignore
+@Disabled
 public class AliyunOssTest {
 
     private String bucket = "jifenke-private";
@@ -22,9 +21,9 @@ public class AliyunOssTest {
     private AliyunOss aliyunOss = new AliyunOss(bucket, endpoint, keyId, keySecret);
 
     @Test
-    public void download() throws Exception {
+    public void download() {
         OSSObject stream = aliyunOss.download("cert/wx-server.pfx");
-        Assert.assertNotNull(stream);
+        Assertions.assertNotNull(stream);
     }
 
     @Test

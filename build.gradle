@@ -13,21 +13,20 @@ plugins {
 
 group = 'com.endofmaster'
 version = '1.0.6'
-sourceCompatibility = '1.8'
+sourceCompatibility = '11'
 description = 'Aliyun Oss Java SDK'
 
 
 repositories {
     maven { url 'https://maven.aliyun.com/repository/central' }
-    maven { url "https://dl.bintray.com/endofmaster/maven" }
 }
 
 dependencies {
-    implementation 'org.apache.commons:commons-lang3:3.9'
-    implementation 'com.aliyun.oss:aliyun-sdk-oss:3.11.1'
+    implementation 'org.apache.commons:commons-lang3:3.11'
+    implementation 'com.aliyun.oss:aliyun-sdk-oss:3.11.2'
     implementation 'org.slf4j:slf4j-api:1.7.21'
 
-    testCompile 'junit:junit:4.12'
+    testCompileOnly 'org.junit.jupiter:junit-jupiter:5.7.0'
 }
 
 bintray {
