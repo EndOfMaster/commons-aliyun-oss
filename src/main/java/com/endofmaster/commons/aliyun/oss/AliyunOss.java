@@ -18,6 +18,7 @@ import com.aliyuncs.IAcsClient;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -170,7 +171,8 @@ public class AliyunOss {
             DeleteObjectsResult deleteObjectsResult = ossClient.deleteObjects(new DeleteObjectsRequest(bucket).withKeys(keys));
             List<String> deletedObjects = deleteObjectsResult.getDeletedObjects();
             if (deletedObjects != null && deletedObjects.size() > 0) {
-                deletedObjects.forEach(key -> logger.debug("批量删除失败的key：" + key));
+                String deleted = StringUtils.join(deletedObjects, ",");
+                logger.debug("批量删除成功删除数量: {}, key串: {}", deletedObjects.size(), deleted);
             }
         }
     }
