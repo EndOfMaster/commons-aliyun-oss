@@ -11,12 +11,9 @@ import com.aliyun.oss.model.DeleteObjectsRequest;
 import com.aliyun.oss.model.DeleteObjectsResult;
 import com.aliyun.oss.model.MatchMode;
 import com.aliyun.oss.model.OSSObject;
+import com.aliyun.oss.model.OSSObjectSummary;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PolicyConditions;
-import com.aliyuncs.DefaultAcsClient;
-import com.aliyuncs.IAcsClient;
-import com.aliyuncs.profile.DefaultProfile;
-import com.aliyuncs.profile.IClientProfile;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -175,6 +172,18 @@ public class AliyunOss {
                 logger.debug("批量删除成功删除数量: {}, key串: {}", deletedObjects.size(), deleted);
             }
         }
+    }
+
+    /**
+     * 根据key前缀查询文件列表
+     * <p>
+     * 如果前缀为文件夹路径, 列表第一位为文件夹key
+     *
+     * @param prefix 前缀
+     * @return 文件列表
+     */
+    public List<OSSObjectSummary> listObjects(String prefix) {
+        return ossClient.listObjectsV2(bucket, prefix).getObjectSummaries();
     }
 
     private Callback buildUploadCallback(String callbackUrl) {
