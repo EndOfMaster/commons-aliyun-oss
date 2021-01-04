@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author YQ.Huang
@@ -182,8 +183,8 @@ public class AliyunOss {
      * @param prefix 前缀
      * @return 文件列表
      */
-    public List<OSSObjectSummary> listObjects(String prefix) {
-        return ossClient.listObjectsV2(bucket, prefix).getObjectSummaries();
+    public List<OssObject> listObjects(String prefix) {
+        return ossClient.listObjectsV2(bucket, prefix).getObjectSummaries().stream().map(OssObject::new).collect(Collectors.toList());
     }
 
     private Callback buildUploadCallback(String callbackUrl) {
