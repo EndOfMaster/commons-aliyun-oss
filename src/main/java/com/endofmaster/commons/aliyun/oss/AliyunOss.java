@@ -11,7 +11,6 @@ import com.aliyun.oss.model.DeleteObjectsRequest;
 import com.aliyun.oss.model.DeleteObjectsResult;
 import com.aliyun.oss.model.MatchMode;
 import com.aliyun.oss.model.OSSObject;
-import com.aliyun.oss.model.OSSObjectSummary;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PolicyConditions;
 import org.apache.commons.codec.binary.Base64;
@@ -113,8 +112,9 @@ public class AliyunOss {
      * @param key OSS对象
      * @return 阿里云数据对象
      */
-    public OSSObject download(String key) {
-        return ossClient.getObject(bucket, key);
+    public InputStream download(String key) {
+        OSSObject ossObject = ossClient.getObject(bucket, key);
+        return ossObject.getObjectContent();
     }
 
     /**
