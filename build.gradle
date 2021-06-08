@@ -1,14 +1,13 @@
 buildscript {
     repositories {
         maven { url 'https://maven.aliyun.com/repository/central' }
-        jcenter()
     }
 }
 
 plugins {
     id 'maven'
     id 'java-library'
-    id "com.jfrog.bintray" version "1.8.5"
+    id 'maven-publish'
 }
 
 group = 'com.endofmaster'
@@ -19,6 +18,7 @@ description = 'Aliyun Oss Java SDK'
 
 repositories {
     maven { url 'https://maven.aliyun.com/repository/central' }
+    mavenLocal()
 }
 
 dependencies {
@@ -29,25 +29,22 @@ dependencies {
     testCompileOnly 'org.junit.jupiter:junit-jupiter:5.7.0'
 }
 
-bintray {
-    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : '<bintrayUser>'
-    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : '<bintrayApiKey>'
-    configurations = ['archives']
-
-    dryRun = false //[Default: false] Whether to run this as dry-run, without deploying
-    publish = true //[Default: false] Whether version should be auto published after an upload
-    override = true //[Default: false] Whether to override version artifacts already published
-    pkg {
-        repo = 'maven'
-        name = project.name
-        userOrg = 'endofmaster'
-        licenses = ['Apache-2.0']
-        vcsUrl = "https://github.com/EndOfMaster/${project.name}/"
-        version {
-            name = project.version
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/EndOfMaster/maven-repo")
+            credentials {
+                username = project.findProperty("githubUser") ?: System.getenv("githubUser")
+                password = project.findProperty("githubKey") ?: System.getenv("githubKey")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
         }
     }
 }
 
-// 代码文件以UTF-8编码，注意：不加该设置可能报“错误: 编码GBK的不可映射字符”
 [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'

@@ -7,7 +7,7 @@
 * 根据key下载文件
 * 创建前端下载的连接
 ## Maven Repository
-    https://dl.bintray.com/endofmaster/maven
+    https://maven.pkg.github.com/EndOfMaster/maven-repo
 ### Maven Import
 ```xml
 <dependency>
@@ -18,6 +18,6 @@
 </dependency>
 ```
 ### Gradle Import
-```gradle
+```groovy
 compile 'com.endofmaster:commons-aliyun-oss:1.0.1'
 ```
