@@ -1,5 +1,5 @@
 # commons-aliyun-oss
-[![DUB](https://img.shields.io/badge/download-1.0.1-brightgreen.svg)](https://bintray.com/endofmaster/maven/commons-aliyun-oss)
+[![DUB](https://img.shields.io/badge/download-1.0.6-brightgreen.svg)](https://bintray.com/endofmaster/maven/commons-aliyun-oss)
 ## 初始化
   根据参数创建AliyunOss类的bean
 ## 功能
@@ -13,11 +13,11 @@
 <dependency>
   <groupId>com.endofmaster</groupId>
   <artifactId>commons-aliyun-oss</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.6</version>
   <type>pom</type>
 </dependency>
 ```
 ### Gradle Import
 ```groovy
-compile 'com.endofmaster:commons-aliyun-oss:1.0.1'
+compile 'com.endofmaster:commons-aliyun-oss:1.0.6'
 ```
